@@ -1,3 +1,5 @@
+local deepequal = require('deps/deep-equal')
+
 local harness = {}
 
 harness['count'] = 0
@@ -14,11 +16,27 @@ end
 
 function harness.equals(a, b, description)
   harness['count'] = harness['count'] + 1
-  if (a == b) then
+  
+  if a == b then
     harness.pass(description)
   else
     harness.fail(description)
   end
+end
+
+function harness.deepEquals(a, b, description)
+  harness['count'] = harness['count'] + 1
+  if a == b then harness.pass(description) end
+  if type(a) == 'table' then
+    if deepequal(a, b, '') then
+      harness.pass(description)
+    else
+      harness.fail(description)
+    end
+  else
+    harness.fail(description) 
+  end
+  
 end
 
 function harness.pass(description)
@@ -31,13 +49,12 @@ function harness.fail(description)
 end
 
 function harness.done()
-  print('test done')
+  print()
+  print('1..' .. tostring(harness['count']))
+  print('# tests\t' .. tostring(harness['count']))
+  print('# pass\t' .. tostring(harness['count'] - harness['failed']))
   if harness['failed'] > 0 then
-   
-    local msg = 'Failed ' .. tostring(harness['failed']) .. 
-                '/' .. tostring(harness['count']) .. ' tests'
-    local percentage = tostring(harness['failed'] / harness['count'] * 100)
-    print(msg .. ', ' .. percentage .. '% okay')
+    print('# fail\t' .. tostring(harness['failed']) )
   end
 end
 
