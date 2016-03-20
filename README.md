@@ -1,7 +1,7 @@
 # lua-tape
 playing with rewriting substack/tape for luvit
 
-# use
+## use
 
 ```lua
 local test = require('lua-tape')
@@ -13,7 +13,7 @@ test('are equal', function (t)
 end)
 ```
 
-# api
+## api
 
 ### test(description, cb)
 Create a new test with description. cb is called and passed a harness (t)
