@@ -1,6 +1,6 @@
 return {
   name = "filwisher/lua-tape",
-  version = "0.0.1",
+  version = "0.0.2",
   description = "A testing harness based on substack/tape",
   tags = { "testing", "tests", "harness", "tape", "tap" },
   license = "MIT",
