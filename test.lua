@@ -1,7 +1,7 @@
 local test = require('./lua-tape')
 
 test('deepEquals', function (t) 
-  
+ 
   t:deepEquals({ ok = true, notOk = false },
                { ok = true, notOk = false },
                'same structure should be equal')

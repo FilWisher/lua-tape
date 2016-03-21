@@ -14,7 +14,9 @@ function results:display()
   print('# pass\t' .. tostring(results['passes']))
   if results['fails'] > 0 then
     print('# fail\t' .. tostring(self['fails']))
+    os.exit(1)
   end
+  os.exit(0)
 end
 
 process:on('exit', function()
