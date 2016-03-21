@@ -46,3 +46,8 @@ test('booleans', function (t)
   t:notOk(false, 'false is not ok')
   t:done()
 end)
+
+test('booleans', function (t)
+  t:pass('nono')
+  t:done()
+end)

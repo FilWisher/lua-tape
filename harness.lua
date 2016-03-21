@@ -34,7 +34,6 @@ function harness:new(o)
 end
 
 function harness:ok(value, description) 
-  results['count'] = results['count'] + 1
   if (value) then
     self:pass(description)
   else
@@ -43,7 +42,6 @@ function harness:ok(value, description)
 end
 
 function harness:notOk(value, description) 
-  results['count'] = results['count'] + 1
   if (value) then
     self:fail(description)
   else
@@ -52,7 +50,6 @@ function harness:notOk(value, description)
 end
 
 function harness:equals(a, b, description)
-  results['count'] = results['count'] + 1
   if a == b then
     self:pass(description)
   else
@@ -61,7 +58,6 @@ function harness:equals(a, b, description)
 end
 
 function harness:notEquals(a, b, description)
-  results['count'] = results['count'] + 1
   if a ~= b then
     self:pass(description)
   else
@@ -70,7 +66,6 @@ function harness:notEquals(a, b, description)
 end
 
 function harness:deepEquals(a, b, description)
-  results['count'] = results['count'] + 1
   if a == b then 
     self:pass(description)
     return
@@ -87,12 +82,14 @@ function harness:deepEquals(a, b, description)
 end
 
 function harness:pass(description)
+  results['count'] = results['count'] + 1
   results['passes'] = results['passes'] + 1
   print('passes', results['passes'])
   print('ok ' .. tostring(results['count']) .. ' - ' .. description)
 end
 
 function harness:fail(description)
+  results['count'] = results['count'] + 1
   results['fails'] = results['fails'] + 1
   print('not ok ' .. tostring(results['count']) .. ' - ' .. description)
 end
