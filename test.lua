@@ -1,18 +1,46 @@
-local test = require('lua-tape')
+local test = require('./lua-tape')
 
-test('string', function (t) 
-
-  t.ok('caal', 'it is cool')
-  t.equals(8, 8, 'they are equal')
-  t.equals(1, 8, 'should be NOT equal')
+test('deepEquals', function (t) 
   
-  
-  t.deepEquals({ ok = true, notOk = false },
+  t:deepEquals({ ok = true, notOk = false },
                { ok = true, notOk = false },
-               'should be equal')
+               'same structure should be equal')
   
-  t.deepEquals({ ok = true, notOk = false },
-               { ok = false, notOk = true },
-               'should NOT be equal')
-  t.done()
+  t:deepEquals({ ok = true, notOk = false, cool = { ace = 8 } },
+               { ok = true, notOk = false, cool = { ace = 8 } },
+               'same nested structure should be equal')
+ 
+  local obj = { ok = true, notOk = false, cool = { ace = 8 } }
+  t:deepEquals(obj, obj, 'same reference should be equal')
+  
+  t:done()
+end)
+
+test('numbers', function (t)
+  math.randomseed(os.time())
+  for i = 1, 10 do
+    a = math.random()
+    b = math.random()
+    t:equals(a, a, tostring(a) .. 'equals itself')
+    t:equals(b, b, tostring(b) .. 'equals itself')
+    if a == b then
+      t:equals(a, b, 
+        tostring(a) .. ' and ' .. tostring(b) .. ' are equal')
+    else
+      t:notEquals(a, b, 
+        tostring(a) .. ' and ' .. tostring(b) .. ' are not equal')
+    end
+  end
+  t:equals(0, 0, '0 == 0')
+  t:equals(-1, -1, '-1 == -1')
+  t:notEquals(0, -1, '0 == 0')
+end)
+
+test('booleans', function (t)
+  t:equals(true, true, 'true are equal')
+  t:equals(false, false, 'false are equal')
+  t:notEquals(true, false, 'false are not equal')
+  t:notEquals(false, true, 'true are not equal')
+  t:ok(true, 'true is ok')
+  t:notOk(false, 'false is not ok')
 end)

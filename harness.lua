@@ -1,61 +1,100 @@
 local deepequal = require('deps/deep-equal')
+local process = require('process').globalProcess()
+
+local results = {
+  count = 0
+, fails = 0
+, passes = 0
+}
+
+function results:display()
+  print()
+  print('1..' .. tostring(results['count']))
+  print('# tests\t' .. tostring(results['count']))
+  print('# pass\t' .. tostring(results['passes']))
+  if results['fails'] > 0 then
+    print('# fail\t' .. tostring(self['fails']))
+  end
+end
+
+process:on('exit', function()
+  results:display()
+end)
 
 local harness = {}
 
-harness['count'] = 0
-harness['failed'] = 0
+function harness:new(o)
+  local o = o or {}
+  setmetatable(o, self)
+  self.__index = self
+  return o
+end
 
-function harness.ok(value, description) 
-  harness['count'] = harness['count'] + 1
+function harness:ok(value, description) 
+  results['count'] = results['count'] + 1
   if (value) then
-    harness.pass(description)
+    self:pass(description)
   else
-    harness.fail(description)
+    self:fail(description)
   end
 end
 
-function harness.equals(a, b, description)
-  harness['count'] = harness['count'] + 1
-  
+function harness:notOk(value, description) 
+  results['count'] = results['count'] + 1
+  if (value) then
+    self:fail(description)
+  else
+    self:pass(description)
+  end
+end
+
+function harness:equals(a, b, description)
+  results['count'] = results['count'] + 1
   if a == b then
-    harness.pass(description)
+    self:pass(description)
   else
-    harness.fail(description)
+    self:fail(description)
   end
 end
 
-function harness.deepEquals(a, b, description)
-  harness['count'] = harness['count'] + 1
-  if a == b then harness.pass(description) end
+function harness:notEquals(a, b, description)
+  results['count'] = results['count'] + 1
+  if a ~= b then
+    self:pass(description)
+  else
+    self:fail(description)
+  end
+end
+
+function harness:deepEquals(a, b, description)
+  results['count'] = results['count'] + 1
+  if a == b then 
+    self:pass(description)
+    return
+  end
   if type(a) == 'table' then
     if deepequal(a, b, '') then
-      harness.pass(description)
+      self:pass(description)
     else
-      harness.fail(description)
+      self:fail(description)
     end
   else
-    harness.fail(description) 
+    self:fail(description) 
   end
-  
 end
 
-function harness.pass(description)
-  print('ok ' .. tostring(harness['count']) .. ' - ' .. description)
+function harness:pass(description)
+  results['passes'] = results['passes'] + 1
+  print('passes', results['passes'])
+  print('ok ' .. tostring(results['count']) .. ' - ' .. description)
 end
 
-function harness.fail(description)
-  harness['failed'] = harness['failed'] + 1
-  print('not ok ' .. tostring(harness['count']) .. ' - ' .. description)
+function harness:fail(description)
+  results['fails'] = results['fails'] + 1
+  print('not ok ' .. tostring(results['count']) .. ' - ' .. description)
 end
 
-function harness.done()
-  print()
-  print('1..' .. tostring(harness['count']))
-  print('# tests\t' .. tostring(harness['count']))
-  print('# pass\t' .. tostring(harness['count'] - harness['failed']))
-  if harness['failed'] > 0 then
-    print('# fail\t' .. tostring(harness['failed']) )
-  end
+function harness:done()
 end
 
 return harness
