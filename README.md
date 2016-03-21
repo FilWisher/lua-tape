@@ -4,7 +4,7 @@ a rewrite of [substack/tape](http://github.com/substack/tape) for luvit
 # use
 
 ```lua
-local test = require('lua-tape')
+local test = require('lua-tape').test
 
 test('are equal', function (t)
   t.ok(8, 'the value 8 is truthy')
