@@ -27,6 +27,7 @@ local harness = {}
 
 function harness:new(o)
   local o = o or {}
+  o['__done'] = false
   setmetatable(o, self)
   self.__index = self
   return o
@@ -97,6 +98,7 @@ function harness:fail(description)
 end
 
 function harness:done()
+  self['__done'] = true
 end
 
 return harness
