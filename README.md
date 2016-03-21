@@ -1,5 +1,5 @@
 # lua-tape
-playing with rewriting substack/tape for luvit
+a rewrite of [substack/tape](http://github.com/substack/tape) for luvit
 
 ## use
 
@@ -21,7 +21,13 @@ Create a new test with description. cb is called and passed a harness (t)
 ### t.ok(value, description)
 Assert that the value of t is truthy and print description
 
+### t.noOk(value, description)
+Assert that the value of t is falsy and print description
+
 ### t.equals(value1, value2, description)
+Assert that values 1 and 2 are equal and print description
+
+### t.notEquals(value1, value2, description)
 Assert that values 1 and 2 are equal and print description
 
 ### t.deepEquals(obj1, obj2, description)
