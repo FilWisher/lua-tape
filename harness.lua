@@ -1,4 +1,4 @@
-local deepequal = require('deps/deep-equal')
+local deepequal = require('deep-equal')
 local process = require('process').globalProcess()
 
 local results = {
