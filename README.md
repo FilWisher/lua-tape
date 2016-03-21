@@ -37,3 +37,6 @@ Assert that values 1 and 2 are equal and print description
 
 ## t.deepEquals(obj1, obj2, description)
 Assert that values 1 and 2 are deeply equal - in a recursive comparison, their properties are all equal
+
+# license
+to kill (MIT)
